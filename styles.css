@@ -39,72 +39,103 @@ body{
 }
 .btn--give:hover{background:var(--yellow-700)}
 
-/* ===== Hero ===== */
+/* =========================
+   HERO (background + layout)
+   ========================= */
 .hero{
-  position:relative;
-  min-height:78vh;
-  display:grid;
-  /* create a left-side image + right-side copy feel using a background image */
-  background: url("../img/hero.jpg") left center / cover no-repeat;
-  isolation:isolate;
+  position: relative;
+  min-height: 76vh;
+  display: block;
+  isolation: isolate;
+  overflow: hidden;              /* trims edges/wedge cleanly */
 }
 
-/* Diagonal wedge bottom-right to match the mock */
+/* Real image behaves like a cover background */
+.hero__img{
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  object-position: 70% center;   /* bias right; adjust 65–75% as needed */
+  z-index: 0;
+}
+
+/* Right-edge readability gradient (no solid card) */
+.hero::before{
+  content: "";
+  position: absolute; inset: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(0,0,0,0) 55%,
+    rgba(0,0,0,.28) 78%,
+    rgba(0,0,0,.45) 100%
+  );
+  z-index: 1;                    /* above image, below text */
+}
+
+/* Diagonal blue wedge like the mock */
 .hero::after{
-  content:""; position:absolute; right:0; bottom:0; width:55%; height:72px;
-  background:var(--sky);
-  clip-path:polygon(0 100%, 100% 0, 100% 100%);
-  filter:drop-shadow(0 8px 24px rgba(0,0,0,.08));
-  z-index:0;
+  content:"";
+  position:absolute; right:0; bottom:0;
+  width:55%; height:72px;
+  background: var(--sky);
+  clip-path: polygon(0 100%, 100% 0, 100% 100%);
+  filter: drop-shadow(0 8px 24px rgba(0,0,0,.08));
+  z-index: 1;
 }
 
-/* Right-hand white panel with copy */
-.hero__panel{
-  display:grid; grid-template-columns: 1fr min(560px, 46%); align-items:center;
-  height:100%;
-}
+/* Span the hero so we can anchor text within it */
+.hero__panel{ position:absolute; inset:0; z-index:2; }
+
+/* TOP-RIGHT copy placement */
 .hero__copy{
-  grid-column:2/3;
-  background:#fff; padding:28px; border-radius:16px;
-  box-shadow:var(--shadow);
-  margin:24px 0 64px; /* leave space for wedge */
-  z-index:1;
+  position: absolute;
+  top: clamp(72px, 10vh, 120px);     /* high in the frame */
+  right: clamp(24px, 5vw, 72px);     /* tight to right edge */
+  max-width: min(560px, 42vw);
+  color: #fff;
+  text-shadow: 0 2px 12px rgba(0,0,0,.45);
 }
+
+/* Stacked headline sized for the corner */
 .display{
-  font-size: clamp(32px, 6vw, 64px);
-  line-height:1.05;
-  margin:0 0 .6rem 0;
+  font-size: clamp(28px, 4.8vw, 56px);
+  line-height: 1.02;
+  margin: 0 0 .6rem 0;
   text-transform: lowercase;
-  font-weight:800;
-}
-.lead{color:var(--ink-2); margin:0 0 1rem 0}
-.actions{display:flex; align-items:center; gap:16px}
-
-/* Floating pill CTA on the image (bottom-left) */
-.btn--pill{
-  position:absolute; left:24px; bottom:24px;
-  background:var(--sky); color:#fff; font-weight:800; letter-spacing:.4px;
-  text-decoration:none; padding:1rem 1.4rem; border-radius:20px;
-  box-shadow:var(--shadow);
+  font-weight: 800;
 }
 
-/* Buttons + links */
-.btn{
-  display:inline-block; text-decoration:none; border-radius:999px; font-weight:800;
-  padding:.9rem 1.2rem; color:#111; background:#fff; transition:transform .12s ease, background .2s ease, box-shadow .2s ease;
-  box-shadow:var(--shadow);
+/* Supporting copy + actions on photo */
+.lead{
+  color: #eaeaea;
+  font-size: clamp(14px, 1.1vw, 18px);
+  max-width: 44ch;
+  margin: 0 0 1rem;
 }
-.btn:active{transform:translateY(1px)}
-.btn--primary{background:var(--yellow)}
-.btn--primary:hover{background:var(--yellow-700)}
-.btn--lg{padding:1.05rem 1.45rem}
-.link{font-weight:700; color:var(--ink); text-decoration:none; position:relative}
-.link::after{content:""; position:absolute; left:0; bottom:-3px; height:3px; width:100%; background:var(--ink); transform:scaleX(.25); transform-origin:left; transition:transform .25s ease}
-.link:hover::after{transform:scaleX(1)}
+.actions{ gap: 14px }
+.actions .btn.btn--primary{ box-shadow: 0 10px 24px rgba(0,0,0,.22) }
+.actions .link{ color:#fff }
+.actions .link::after{ background:#fff }
+
+/* Floating pill CTA stays above everything */
+.btn--pill{ z-index: 3 }
+
+/* ---------- Responsive tweaks ---------- */
+@media (max-width: 900px){
+  .hero{ min-height: 70vh; }
+  .hero__img{ object-position: 60% center; }  /* show more right-side space */
+  .hero__copy{
+    top: clamp(64px, 9vh, 100px);
+    right: 16px;
+    max-width: min(520px, 86vw);
+  }
+  .display{ font-size: clamp(26px, 7vw, 44px) }
+  .lead{ font-size: clamp(14px, 1.9vw, 16px) }
+}
 
 /* ===== Sections after hero ===== */
 .section{padding:72px 0}
-.section--muted{background:#fafafa}
+.section--muted{background:#a9c7d6}
 
 /* Story */
 .story{
@@ -133,14 +164,502 @@ body{
   .stats{grid-template-columns: repeat(3, 1fr)}
 }
 
-@media (max-width: 799px){
-  /* Make the right panel less dominant on small screens */
-  .hero__panel{grid-template-columns: 1fr}
-  .hero__copy{grid-column:1/2; margin:16px 16px 72px}
-  .btn--pill{left:16px; bottom:16px}
+/* Mobile/tablet tweaks so copy stays readable and in the corner */
+@media (max-width: 900px){
+  .hero{ background-position: 60% center; min-height: 70vh; }
+  .hero__copy{
+    top: clamp(64px, 9vh, 100px);
+    right: 16px;
+    max-width: min(520px, 86vw);
+  }
+  .display{ font-size: clamp(26px, 7vw, 44px) }
+  .lead{ font-size: clamp(14px, 1.9vw, 16px) }
 }
 
 /* Motion respect */
 @media (prefers-reduced-motion: reduce){
   *{transition:none !important}
+}
+
+/* =========================
+   FIX: HERO PROPORTIONS
+   ========================= */
+
+/* Keep a consistent view-height with guardrails so it never over/under-fills */
+.hero{
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  min-height: clamp(540px, 78vh, 860px);   /* was 76vh; adds min & max */
+}
+
+/* Background image behaves like cover without over-cropping */
+.hero__img{
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  /* Show more right wall for the headline but not too extreme */
+  object-position: 66% center;             /* try 62–70% to taste */
+  z-index: 0;
+}
+
+/* Subtle right-edge gradient only (keeps subject visible) */
+.hero::before{
+  content: "";
+  position: absolute; inset: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(0,0,0,0) 58%,
+    rgba(0,0,0,.25) 78%,
+    rgba(0,0,0,.42) 100%
+  );
+  z-index: 1;
+}
+
+/* Blue wedge stays slim so it doesn't eat vertical space */
+.hero::after{
+  content:"";
+  position:absolute; right:0; bottom:0;
+  width:55%; height:60px;                 /* was 72px */
+  background: var(--sky);
+  clip-path: polygon(0 100%, 100% 0, 100% 100%);
+  filter: drop-shadow(0 8px 24px rgba(0,0,0,.08));
+  z-index: 1;
+}
+
+/* Panel spans the hero; text sits top-right like the mock */
+.hero__panel{ position:absolute; inset:0; z-index: 2; }
+
+.hero__copy{
+  position: absolute;
+  top: clamp(72px, 10vh, 120px);
+  right: clamp(24px, 5vw, 72px);
+  max-width: min(560px, 42vw);
+  color: #fff;
+  text-shadow: 0 2px 12px rgba(0,0,0,.45);
+}
+
+.display{
+  font-size: clamp(28px, 4.6vw, 54px);    /* slightly smaller to fit corner */
+  line-height: 1.03;
+  margin: 0 0 .6rem 0;
+  text-transform: lowercase;
+  font-weight: 800;
+}
+
+.lead{
+  color: #eaeaea;
+  font-size: clamp(14px, 1.05vw, 18px);
+  max-width: 44ch;
+  margin: 0 0 1rem;
+}
+
+@media (max-width: 900px){
+  .hero{ min-height: 68vh; }
+  .hero__img{ object-position: 60% center; }
+  .hero__copy{
+    top: clamp(64px, 9vh, 100px);
+    right: 16px;
+    max-width: min(520px, 86vw);
+  }
+  .display{ font-size: clamp(26px, 6.8vw, 44px) }
+  .lead{ font-size: clamp(14px, 1.9vw, 16px) }
+}
+
+/* =========================
+   FIX: BUTTONS LOOK LIKE LINKS
+   (defensive styles even if classes were dropped)
+   ========================= */
+
+/* Base button */
+.btn{
+  display:inline-block;
+  border-radius:999px;
+  padding:.9rem 1.2rem;
+  font-weight:800;
+  text-decoration:none;
+  color:#111;
+  background:#fff;
+  box-shadow: var(--shadow);
+  transition: transform .12s ease, background .2s ease, box-shadow .2s ease;
+}
+.btn:active{ transform: translateY(1px); }
+
+/* Primary (yellow) */
+.btn--primary{ background: var(--yellow); }
+.btn--primary:hover{ background: var(--yellow-700); }
+
+/* Ghost link style */
+.link{
+  font-weight:700; color:#fff; text-decoration:none; position:relative;
+}
+.link::after{
+  content:""; position:absolute; left:0; bottom:-3px; height:3px; width:100%;
+  background:#fff; transform:scaleX(.25); transform-origin:left;
+  transition:transform .25s ease;
+}
+.link:hover::after{ transform:scaleX(1); }
+
+/* Floating pill CTA (bottom-left) */
+.btn--pill{
+  position:absolute; left:24px; bottom:24px;
+  background:#fff; color:#111;
+  padding: .9rem 1.2rem;
+  border-radius: 999px;
+  box-shadow: var(--shadow);
+  z-index: 3;
+}
+
+/* --- Defensive selectors: style the hero actions as buttons
+   even if the 'btn' classes were accidentally removed --- */
+.hero__copy .actions a:first-child{
+  /* treat first action as primary button */
+  display:inline-block;
+  background: var(--yellow);
+  color:#111;
+  padding:.9rem 1.2rem;
+  border-radius:999px;
+  font-weight:800;
+  text-decoration:none;
+  box-shadow: var(--shadow);
+  margin-right:14px;
+}
+.hero__copy .actions a:nth-child(2){
+  /* treat second action as text link with underline animation */
+  color:#fff; text-decoration:none; position:relative; font-weight:700;
+}
+.hero__copy .actions a:nth-child(2)::after{
+  content:""; position:absolute; left:0; bottom:-3px; height:3px; width:100%;
+  background:#fff; transform:scaleX(.25); transform-origin:left; transition:transform .25s ease;
+}
+.hero__copy .actions a:nth-child(2):hover::after{ transform:scaleX(1); }
+
+/* Space between actions if markup lost the actions wrapper gaps */
+.hero__copy .actions a + a{ margin-left: 14px; }
+
+/* =========================
+   HERO — panel bottom-left + pill top-left
+   ========================= */
+
+/* Put the floating pill in the TOP-LEFT of the hero */
+.btn--pill{
+  position:absolute;
+  top:24px;               /* moved from bottom to top */
+  left:24px;
+  bottom:auto;
+  background:#fff;        /* keep pill white */
+  color:#111;
+  padding:.9rem 1.2rem;
+  border-radius:999px;
+  box-shadow:var(--shadow);
+  z-index:3;
+}
+
+/* Make sure the hero spans/positions correctly */
+.hero{ position:relative; isolation:isolate; overflow:hidden; }
+.hero__panel{ position:absolute; inset:0; z-index:2; }
+
+/* Copy panel anchored BOTTOM-LEFT, covering the sign */
+.hero__copy{
+  position:absolute;
+  left:clamp(16px, 4.5vw, 56px);
+  bottom:clamp(16px, 6vh, 72px);
+  transform:none;
+
+  /* Panel look */
+  background:rgba(255,255,255,0.96);
+  -webkit-backdrop-filter:saturate(120%) blur(2px);
+  backdrop-filter:saturate(120%) blur(2px);
+  border-radius:24px;
+  padding:clamp(16px, 2.2vw, 28px) clamp(18px, 2.6vw, 32px);
+  box-shadow:0 14px 40px rgba(0,0,0,.18);
+
+  /* Typography flips to dark on light panel */
+  color:var(--ink);
+  text-shadow:none;
+
+  /* Size so it cleanly covers the metal plate area */
+  max-width:min(640px, 48vw);
+}
+
+/* Headline smaller/tighter for the panel */
+.display{
+  font-size:clamp(28px, 4.4vw, 52px);
+  line-height:1.04;
+  margin:0 0 .55rem 0;
+  text-transform:lowercase;
+  font-weight:800;
+}
+
+/* Body copy inside panel */
+.lead{
+  color:var(--ink-2);
+  font-size:clamp(14px, 1.05vw, 18px);
+  max-width: 48ch;
+  margin:0 0 1rem;
+}
+
+/* Actions in panel: primary button + text link in dark theme */
+.actions{ display:flex; gap:14px; align-items:center; }
+.actions .btn.btn--primary{
+  background:var(--yellow);
+  color:#111;
+  box-shadow:var(--shadow);
+}
+.actions .link{
+  color:var(--ink);
+}
+.actions .link::after{ background:var(--ink); }
+
+/* Keep the right-edge gradient subtle (optional); panel doesn't need it,
+   but we’ll narrow it so it won't gray the left side. */
+.hero::before{
+  content:""; position:absolute; inset:0;
+  background:linear-gradient(90deg, rgba(0,0,0,0) 60%, rgba(0,0,0,.24) 80%, rgba(0,0,0,.40) 100%);
+  z-index:1;
+}
+
+/* Image framing so the sign sits under the panel */
+.hero__img{
+  object-position: 58% center;   /* nudge left/right to taste (55–62%) */
+}
+
+/* Responsive: keep the panel readable & on the plate area */
+@media (max-width: 900px){
+  .hero__img{ object-position: 55% center; }
+  .hero__copy{
+    left:16px; right:16px; max-width:unset;
+    bottom:clamp(16px, 8vh, 64px);
+    border-radius:20px;
+  }
+  .display{ font-size:clamp(26px, 6.6vw, 44px) }
+  .lead{ font-size:clamp(14px, 1.9vw, 16px) }
+}
+
+/* === HERO: smaller panel, shifted down-left to cover the metal sign === */
+
+/* Nudge the framing so there's plate space bottom-left and we avoid the girl */
+.hero__img{
+  object-position: 56% center; /* try 54–58% if the panel still misses the plate */
+}
+
+/* Rounded white panel over the SIGN (smaller + further down-left) */
+.hero__copy{
+  position: absolute;
+  left: clamp(8px, 2.5vw, 28px);   /* closer to the left edge */
+  bottom: clamp(10px, 5vh, 44px);  /* a bit lower toward the bottom */
+  right: auto; top: auto;
+  max-width: min(520px, 42vw);     /* smaller panel width */
+  padding: clamp(12px, 1.8vw, 22px) clamp(14px, 2.2vw, 26px); /* tighter padding */
+  background: rgba(255,255,255,0.96);
+  -webkit-backdrop-filter: saturate(120%) blur(1.5px);
+  backdrop-filter: saturate(120%) blur(1.5px);
+  border-radius: 20px;
+  box-shadow: 0 12px 32px rgba(0,0,0,.16);
+  color: var(--ink);
+  text-shadow: none;
+  z-index: 2;
+}
+
+/* Headline + body scaled down to fit the smaller panel */
+.display{
+  font-size: clamp(24px, 3.9vw, 44px);
+  line-height: 1.06;
+  margin: 0 0 .5rem 0;
+  text-transform: lowercase;
+  font-weight: 800;
+}
+.lead{
+  color: var(--ink-2);
+  font-size: clamp(13px, 1vw, 16px);
+  max-width: 48ch;
+  margin: 0 0 .85rem;
+}
+
+/* Actions within the panel */
+.actions{ display:flex; align-items:center; gap:12px; }
+.actions .btn.btn--primary{
+  background: var(--yellow);
+  color:#111;
+  box-shadow: var(--shadow);
+}
+.actions .link{ color: var(--ink); }
+.actions .link::after{ background: var(--ink); }
+
+/* Move the floating pill to the TOP-RIGHT and make it brand yellow */
+.btn--pill{
+  position: absolute;
+  top: 22px;
+  right: 22px;
+  left: auto; bottom: auto;
+  background: var(--yellow);
+  color: #111;
+  padding: .85rem 1.15rem;
+  border-radius: 999px;
+  box-shadow: var(--shadow);
+  z-index: 3;
+}
+
+/* Keep right-edge gradient narrow so it doesn't dim the left panel area */
+.hero::before{
+  content:""; position:absolute; inset:0;
+  background: linear-gradient(90deg,
+    rgba(0,0,0,0) 62%,
+    rgba(0,0,0,.22) 80%,
+    rgba(0,0,0,.38) 100%);
+  z-index: 1;
+}
+
+/* Mobile/tablet: keep panel on the plate without covering the subject */
+@media (max-width: 900px){
+  .hero__img{ object-position: 54% center; }
+  .hero__copy{
+    left: 6px;
+    right: 12px;               /* allow panel to grow a bit if needed */
+    bottom: clamp(10px, 8vh, 36px);
+    max-width: unset;
+    border-radius: 18px;
+  }
+  .display{ font-size: clamp(22px, 6.2vw, 36px) }
+  .lead{ font-size: clamp(13px, 1.8vw, 15px) }
+  .btn--pill{ top: 14px; right: 14px; }
+}
+/* === Remove the white bar between story/impact and CTA === */
+.section--muted{
+  margin-bottom: 0;       /* kill extra spacing below the blue section */
+}
+.cta{
+  margin-top: 0;          /* pull CTA up so it touches */
+  border-top: none;       /* remove any default borders */
+}
+
+/* === CTA button restyle === */
+.cta .btn.btn--primary{
+  background: #fff;       /* white button */
+  color: var(--ink);      /* dark text */
+  font-weight: 800;
+}
+.cta .btn.btn--primary:hover{
+  background: #f7f7f7;    /* subtle hover */
+}
+
+/* === Make CTA gradient stretch up into previous section === */
+.section--muted{
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.cta{
+  margin-top: 0;
+  padding-top: 60px; /* add breathing room at top */
+  background: linear-gradient(
+    180deg,
+    var(--sky) 0%,          /* start with the same blue as story/impact */
+    #ffe27a 35%,            /* fade into lighter yellow */
+    var(--yellow) 100%      /* down to brand yellow */
+  );
+  color: #111;
+  border-top: none;
+}
+
+/* CTA headline + text remain readable */
+.cta__inner h2{ margin-bottom: .25rem; }
+.cta__inner p{ color: #333; margin-bottom: 1rem; }
+
+/* White button in yellow gradient */
+.cta .btn.btn--primary{
+  background: #fff;
+  color: var(--ink);
+  font-weight: 800;
+  box-shadow: var(--shadow);
+}
+.cta .btn.btn--primary:hover{
+  background: #f7f7f7;
+}
+
+/* === Even vertical centering of CTA content === */
+.cta__inner{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+
+  /* give plenty of breathing room above & below */
+  padding: 60px 20px 80px;
+  min-height: 300px;   /* ensures height for centering against footer */
+}
+
+.cta__inner h2{
+  margin-bottom: 16px; /* headline spacing */
+}
+
+.cta__inner p{
+  margin-bottom: 36px; /* more gap before button */
+  max-width: 600px;
+}
+
+.cta .btn.btn--primary{
+  background: #fff;    /* white GIVE button */
+  color: var(--ink);
+  font-weight: 800;
+  padding: 1rem 2rem;
+  border-radius: 999px;
+  box-shadow: var(--shadow);
+}
+.cta .btn.btn--primary:hover{
+  background: #f7f7f7;
+}
+/* === Header with centered logo === */
+.header__inner{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 0;
+}
+
+/* Logo sizing */
+.brand__logo{
+  height: 38px;         /* tweak if too big/small */
+  width: auto;
+  display: block;
+  margin: 0 auto;       /* keep it centered vertically */
+}
+
+/* Nav aligned right */
+.topnav{
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+/* GIVE button in logo yellow */
+.btn--give{
+  background: var(--yellow);
+  color: #111;
+  padding: .55rem 1.1rem;
+  border-radius: 999px;
+  font-weight: 800;
+  box-shadow: var(--shadow);
+}
+.btn--give:hover{
+  background: var(--yellow-700);
+}
+
+/* === Center the story donate button under text === */
+.story .btn--story{
+  display: inline-block;
+  margin: 32px auto 0;   /* auto centers it */
+  background: var(--yellow);
+  color: #111;
+  padding: .9rem 1.6rem;
+  border-radius: 999px;
+  font-weight: 800;
+  text-decoration: none;
+  box-shadow: var(--shadow);
+  text-align: center;
+}
+
+.story .btn--story:hover{
+  background: var(--yellow-700);
 }

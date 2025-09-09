@@ -7,30 +7,34 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="./styles.css?v=1" />
 </head>
 <body>
   <!-- Header -->
   <header class="header">
-    <div class="header__inner container">
-      <a class="brand" href="#">
-        <span class="brand__icon" aria-hidden="true">🧊</span>
-        <span class="brand__text">charity: <span>water</span></span>
-      </a>
+  <div class="header__inner container">
+    <a class="brand" href="#">
+      <img src="img/cw_logo-2.png" alt="charity: water logo" class="brand__logo">
+    </a>
 
-      <nav class="topnav" aria-label="Primary">
-        <a href="#story">Our Story</a>
-        <a href="#impact">Impact</a>
-        <a href="#cta" class="btn btn--give">GIVE</a>
-      </nav>
-    </div>
-  </header>
+    <nav class="topnav" aria-label="Primary">
+      <a href="#story">Our Story</a>
+      <a href="#impact">Impact</a>
+      <a href="#cta" class="btn btn--give">GIVE</a>
+    </nav>
+  </div>
+</header>
 
   <main id="main">
     <!-- HERO (image left, copy right) -->
     <section class="hero">
-      <!-- floating CTA on the photo -->
-      <a class="btn btn--pill" href="#cta" aria-label="Give Today">GIVE TODAY</a>
+  <img class="hero__img" src="img/hero.jpg" alt="" />
+  <!-- floating pill -->
+  <div class="hero__panel container">
+    <div class="hero__copy"> … </div>
+  </div>
+</section>
+
 
       <!-- Right-side copy panel -->
       <div class="hero__panel container">
@@ -59,6 +63,7 @@
           <p>703 million people lack access to clean and safe drinking water. We fund community-led, sustainable water projects — wells, filters, and systems maintained with transparency and ethical stewardship.</p>
           <p>Your gift supports long-term solutions: local training, parts, and monitoring that keep water flowing for years.</p>
           <a href="#cta" class="link">See how your donation works</a>
+          <a class="btn btn--primary btn--story" href="#cta">GIVE TODAY</a>
         </div>
         <div class="story__media">
           <img src="img/story.jpg" alt="Community well providing clean water.">
