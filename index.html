@@ -1,47 +1,102 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Charity Water Landing Page</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>charity: water — Clean water. Clean ethics. Saving lives.</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body>
-    <!-- Hero Section: This is the main banner at the top of the page -->
+  <!-- Header -->
+  <header class="header">
+    <div class="header__inner container">
+      <a class="brand" href="#">
+        <span class="brand__icon" aria-hidden="true">🧊</span>
+        <span class="brand__text">charity: <span>water</span></span>
+      </a>
+
+      <nav class="topnav" aria-label="Primary">
+        <a href="#story">Our Story</a>
+        <a href="#impact">Impact</a>
+        <a href="#cta" class="btn btn--give">GIVE</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- HERO (image left, copy right) -->
     <section class="hero">
-        <!-- Main headline -->
-        <h1>Clean Water for Everyone</h1>
-        <!-- Subheadline -->
-        <p>Join us in bringing safe, clean water to communities in need.</p>
-    </section>
+      <!-- floating CTA on the photo -->
+      <a class="btn btn--pill" href="#cta" aria-label="Give Today">GIVE TODAY</a>
 
-    <!-- Story Section: This tells the story of the nonprofit -->
-    <section class="story">
-        <h2>Our Story</h2>
-        <p>
-         
-    </section>
-
-    <!-- Real-World Impact Story Section -->
-    <section class="impact-story">
-        <!-- Section headline -->
-        <h2>Real Impact: Meet Amina</h2>
-        <!-- Container for image and text -->
-        <div class="impact-content">
-            <!-- Impact image -->
-            <img src="https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=600&q=80" alt="Amina smiling with clean water" class="impact-image">
-            <!-- Impact story text -->
-            <p>
-                Amina used to walk miles every day to collect water for her family. Thanks to your support, her village now has a clean water well. Amina can go to school and her family is healthier and happier.
-            </p>
+      <!-- Right-side copy panel -->
+      <div class="hero__panel container">
+        <div class="hero__copy">
+          <h1 class="display">
+            <span>clean water.</span><br>
+            <span>clean ethics.</span><br>
+            <span>saving lives.</span>
+          </h1>
+          <p class="lead">
+            Every donation fuels a global movement for ethical, sustainable change — turning your support into real wells, real water, and real lives saved.
+          </p>
+          <div class="actions">
+            <a href="#cta" class="btn btn--primary">Give Today</a>
+            <a href="#story" class="link">Learn How</a>
+          </div>
         </div>
+      </div>
     </section>
 
-    <!-- Call-to-Action Section: This encourages visitors to take action -->
-    <section class="call-to-action">
-        <h2>Make a Difference</h2>
-        <p>Your support can help save lives. Every donation brings us closer to a world with clean water for all.</p>
-        <a href="#" class="donate-button">Donate Now</a>
+    <!-- STORY -->
+    <section id="story" class="section">
+      <div class="container story">
+        <div class="story__text">
+          <h2>Why Water?</h2>
+          <p>703 million people lack access to clean and safe drinking water. We fund community-led, sustainable water projects — wells, filters, and systems maintained with transparency and ethical stewardship.</p>
+          <p>Your gift supports long-term solutions: local training, parts, and monitoring that keep water flowing for years.</p>
+          <a href="#cta" class="link">See how your donation works</a>
+        </div>
+        <div class="story__media">
+          <img src="img/story.jpg" alt="Community well providing clean water.">
+        </div>
+      </div>
     </section>
+
+    <!-- IMPACT -->
+    <section id="impact" class="section section--muted">
+      <div class="container">
+        <h2 style="text-align:center">Proven Impact</h2>
+        <ul class="stats">
+          <li><span class="num">46k+</span><span class="lab">Water Projects Funded</span></li>
+          <li><span class="num">14M+</span><span class="lab">People Served</span></li>
+          <li><span class="num">100%</span><span class="lab">Public Donations to Projects</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- CTA BAND -->
+    <section id="cta" class="cta">
+      <div class="container cta__inner">
+        <h2>Turn generosity into water.</h2>
+        <p>Make a tax-deductible gift now and help bring clean, safe water to families in need.</p>
+        <a class="btn btn--primary btn--lg" href="#">Donate Securely</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer__inner">
+      <p>&copy; <span id="year"></span> charity: water</p>
+      <a class="link" href="#">Privacy</a>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
 </body>
 </html>
